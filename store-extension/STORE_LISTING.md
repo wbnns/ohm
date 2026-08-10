@@ -85,6 +85,14 @@ short enough to audit directly: https://github.com/wbnns/ohm/tree/main/store-ext
 https://ohm.wbnns.com/privacy/
 ```
 
+## Support URL
+
+```
+https://ohm.wbnns.com/support/
+```
+
+Support email on that page: ohm@wbnns.com
+
 ## Icon
 
 ```
@@ -108,6 +116,17 @@ Two ready to upload, in `store-extension/screenshots/`, both 1280×800:
 Google's current minimum is 1 screenshot, up to 5, 1280×800 recommended
 (640×400 also accepted) — confirm in the Dashboard at submission time,
 these numbers have shifted before.
+
+## Promo tiles (optional)
+
+Not required for publishing — only used if Google features the listing,
+which isn't requestable and is unlikely for a niche tool like this. In
+`store-extension/promo/` if you want them anyway:
+
+- `small-tile.png` — 440×280
+- `marquee-tile.png` — 1400×560
+
+Both 24-bit PNG, no alpha, matching the site's existing brand/palette.
 
 ## What's left — only you can do these
 

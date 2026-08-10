@@ -59,7 +59,7 @@
   .toc a { border-bottom-color: rgba(var(--accent-rgb), 0.25); }
   .back-link { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6); border-bottom: 1px solid rgba(var(--fg-rgb), 0.25); }
   .back-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
-  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap; }
+  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; flex-direction: column; gap: 8px; }
 </style>
 <!-- 100% privacy-first analytics -->
 <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
@@ -70,14 +70,17 @@
 <div style="background: var(--bg); display: flex; justify-content: center; padding: 56px 28px 80px;">
   <main style="width: 100%; max-width: 700px;">
 
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
-      <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
-        <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
-          <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
-          <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
-        </svg>
-        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
-      </a>
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
+      <div>
+        <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
+          <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+            <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+            <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+          </svg>
+          <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
+        </a>
+        <div style="font-size: 12px; color: rgba(var(--fg-rgb), 0.5); margin: 4px 0 0 33px;">by <a href="https://x.com/wbnns" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">wbnns</a></div>
+      </div>
       <a href="../" class="back-link">← home</a>
     </div>
 
@@ -213,7 +216,12 @@
     <p>Because every generated build is a unique, personal file scoped to exactly your own rules — there's nothing generic there to publish to a store. The Store listing solves a different problem (zero-friction install) at the cost of a different trade-off (broad permission, one shared package). See <a href="#install-paths">Two ways to install</a> above for the full comparison — if you'd rather keep permissions as small as possible and don't mind the extra clicks, the generator's download is still the more minimal-trust option.</p>
 
     <footer>
-      <span>doesn't send your data anywhere</span><span>·</span><a href="../">home</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+      <span>doesn't send your data anywhere</span>
+      <a href="../">home</a>
+      <a href="../privacy/">privacy</a>
+      <a href="../support/">support</a>
+      <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+      <a href="https://github.com/wbnns/ohm/blob/main/LICENSE" target="_blank" rel="noopener">MIT license</a>
     </footer>
 
   </main>

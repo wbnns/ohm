@@ -37,7 +37,7 @@
   .updated { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.5); margin: 0 0 40px; }
   .back-link { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6); border-bottom: 1px solid rgba(var(--fg-rgb), 0.25); }
   .back-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
-  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap; }
+  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; flex-direction: column; gap: 8px; }
 </style>
 <!-- 100% privacy-first analytics -->
 <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
@@ -48,14 +48,17 @@
 <div style="background: var(--bg); display: flex; justify-content: center; padding: 56px 28px 80px;">
   <main style="width: 100%; max-width: 700px;">
 
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
-      <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
-        <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
-          <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
-          <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
-        </svg>
-        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
-      </a>
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
+      <div>
+        <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
+          <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+            <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+            <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+          </svg>
+          <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
+        </a>
+        <div style="font-size: 12px; color: rgba(var(--fg-rgb), 0.5); margin: 4px 0 0 33px;">by <a href="https://x.com/wbnns" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">wbnns</a></div>
+      </div>
       <a href="../" class="back-link">← home</a>
     </div>
 
@@ -79,10 +82,15 @@
     <p>If you use the <a href="../">"build your own"</a> path instead of the Store listing, the same guarantees apply, with an even smaller permission footprint: the generated <code>manifest.json</code> has empty <code>permissions</code> and <code>host_permissions</code> arrays beyond the exact hosts your own rules name, and your rules are baked into the file itself rather than saved anywhere.</p>
 
     <h2>Questions</h2>
-    <p>Open an issue on <a href="https://github.com/wbnns/ohm/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+    <p>See <a href="../support/">support</a>, email <a href="mailto:ohm@wbnns.com">ohm@wbnns.com</a>, or open an issue on <a href="https://github.com/wbnns/ohm/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 
     <footer>
-      <span>doesn't send your data anywhere</span><span>·</span><a href="../">home</a><span>·</span><a href="../docs/">docs</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+      <span>doesn't send your data anywhere</span>
+      <a href="../">home</a>
+      <a href="../docs/">docs</a>
+      <a href="../support/">support</a>
+      <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+      <a href="https://github.com/wbnns/ohm/blob/main/LICENSE" target="_blank" rel="noopener">MIT license</a>
     </footer>
 
   </main>
