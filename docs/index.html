@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ohm docs — filter syntax, durability & troubleshooting</title>
+<meta name="description" content="How ohm's cosmetic filters work: supported uBlock Origin syntax, durable vs. fragile selectors, troubleshooting silent failures, and FAQ." />
+<meta name="theme-color" content="#041a1a" />
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="../assets/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="manifest" href="../site.webmanifest" />
+<meta property="og:title" content="ohm docs — filter syntax, durability & troubleshooting" />
+<meta property="og:description" content="How ohm's cosmetic filters work: supported uBlock Origin syntax, durable vs. fragile selectors, troubleshooting silent failures, and FAQ." />
+<meta property="og:image" content="https://ohm.wbnns.com/assets/og.png" />
+<meta property="og:url" content="https://ohm.wbnns.com/docs/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #041a1a; --panel: #072121; --panel-2: #0a2828; --fg: #eafaf6; --fg-rgb: 234,250,246;
+          --accent: oklch(0.74 0.17 25); --accent-hi: oklch(0.82 0.15 25); --accent-rgb: 240,124,98;
+          --good: oklch(0.80 0.14 170); }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(var(--accent-rgb), 0.35); }
+  a:hover { color: var(--accent-hi); border-bottom-color: var(--accent-hi); }
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  main { color: var(--fg); font-size: 15px; line-height: 1.7; }
+  h1 { font-size: clamp(27px, 4.2vw, 38px); font-weight: 700; line-height: 1.22; letter-spacing: -0.035em; margin: 0 0 14px; text-wrap: pretty; }
+  h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin: 56px 0 14px; scroll-margin-top: 24px; }
+  h2 .num { color: rgba(var(--fg-rgb), 0.4); font-weight: 500; margin-right: 8px; }
+  h3 { font-size: 14.5px; font-weight: 700; margin: 26px 0 8px; }
+  p { margin: 0 0 14px; color: rgba(var(--fg-rgb), 0.82); max-width: 68ch; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; color: rgba(var(--fg-rgb), 0.82); }
+  li { margin: 0 0 6px; max-width: 66ch; }
+  code, .code { font-family: inherit; background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 3px; padding: 1px 6px; font-size: 13px; color: var(--fg); }
+  pre { background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.16); border-radius: 3px; padding: 14px 16px; overflow-x: auto; font-size: 13px; line-height: 1.7; margin: 0 0 14px; }
+  pre code { background: none; border: 0; padding: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 0 0 16px; font-size: 13px; }
+  th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid rgba(var(--fg-rgb), 0.12); vertical-align: top; }
+  th { color: rgba(var(--fg-rgb), 0.55); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+  td.op { white-space: nowrap; color: var(--accent-hi); }
+  .table-wrap { overflow-x: auto; margin: 0 0 14px; }
+  .callout { background: var(--panel); border: 1px solid rgba(var(--accent-rgb), 0.3); border-left: 3px solid var(--accent); border-radius: 3px; padding: 14px 16px; margin: 0 0 16px; }
+  .callout p:last-child { margin-bottom: 0; }
+  .good { color: var(--good); }
+  .bad { color: var(--accent-hi); }
+  .toc { background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 3px; padding: 16px 20px; margin: 0 0 40px; }
+  .toc-title { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(var(--fg-rgb), 0.5); margin-bottom: 10px; }
+  .toc ol { margin: 0; padding-left: 20px; }
+  .toc li { margin: 0 0 5px; }
+  .toc a { border-bottom-color: rgba(var(--accent-rgb), 0.25); }
+  .back-link { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6); border-bottom: 1px solid rgba(var(--fg-rgb), 0.25); }
+  .back-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
+  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap; }
+</style>
+<!-- 100% privacy-first analytics -->
+<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+</head>
+<body>
+
+<div style="background: var(--bg); display: flex; justify-content: center; padding: 56px 28px 80px;">
+  <main style="width: 100%; max-width: 700px;">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
+      <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
+        <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+          <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+          <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+        </svg>
+        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
+      </a>
+      <a href="../" class="back-link">← generator</a>
+    </div>
+
+    <h1>Docs</h1>
+    <p>Everything the landing page doesn't have room for: what ohm will and won't do, the filter syntax it understands, which selectors survive a redeploy, and what to do when a rule silently does nothing.</p>
+
+    <nav class="toc" aria-label="Table of contents">
+      <div class="toc-title">On this page</div>
+      <ol>
+        <li><a href="#what-ohm-is">What ohm is (and isn't)</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#syntax">Filter syntax reference</a></li>
+        <li><a href="#durability">Durability: which selectors last</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="what-ohm-is"><span class="num">01</span>What ohm is (and isn't)</h2>
+    <p>ohm runs your own hand-written cosmetic filters — rules like <code>x.com##div[data-testid="metadata"]</code> — as a Chrome extension, scoped to only the hosts those rules mention. That's the entire feature set. It exists because Chrome's Manifest V2 removal killed uBlock Origin, and with it, years of personal cosmetic-filter lists that had nowhere left to run.</p>
+    <p>A few things it deliberately doesn't do, stated plainly because the category invites scope creep:</p>
+    <ul>
+      <li><strong>Not an ad blocker.</strong> No network filtering, no <code>declarativeNetRequest</code>, no filter list subscriptions. Pair it with uBlock Origin Lite if you want ads blocked too — they don't conflict.</li>
+      <li><strong>Not a uBlock Origin fork.</strong> Forking uBO-classic doesn't help — Chrome won't load an MV2 manifest regardless of source. ohm is a new, much smaller thing that happens to read a compatible filter syntax.</li>
+      <li><strong>Not a full uBO syntax implementation.</strong> Cosmetic filters only. No <code>$redirect</code>, no HTML filtering, no dynamic filtering, no scriptlets beyond what a plain content script can trivially do.</li>
+      <li><strong>Not a wellness product.</strong> No streaks, no time tracking, no shaming. It hides elements. That's the whole contract.</li>
+    </ul>
+
+    <h2 id="how-it-works"><span class="num">02</span>How it works</h2>
+    <p>The <a href="../">generator</a> parses your pasted list entirely in your browser tab — nothing you paste is ever sent anywhere. It groups the surviving rules by host, builds a Manifest V3 extension around them, and packages it as a zip:</p>
+    <ol>
+      <li><strong>Paste.</strong> A uBlock Origin cosmetic filter list — the same <code>.txt</code> you were using before.</li>
+      <li><strong>Parse.</strong> Client-side JavaScript splits it into rules, drops what ohm can't run (see below), and reports what it kept and skipped.</li>
+      <li><strong>Build.</strong> A <code>manifest.json</code> scoped to exactly the hosts your surviving rules mention, plus a <code>rules.js</code> data file and a <code>content.js</code> that applies them.</li>
+      <li><strong>Download &amp; load.</strong> Unzip, open <code>chrome://extensions</code>, enable Developer mode, click Load unpacked, pick the folder.</li>
+    </ol>
+    <p>There's no server anywhere in this pipeline. The generator is a static page; the extension it produces has no <code>host_permissions</code> beyond the sites you named and no code path that could reach the network even if it wanted to.</p>
+
+    <h2 id="syntax"><span class="num">03</span>Filter syntax reference</h2>
+    <p>Each rule is one line: <code>host##selector</code>. The host can be a comma-separated list (<code>x.com,pro.x.com##...</code>); each host gets its own copy of the rule. <code>host#?#selector</code> (uBO's "extended" cosmetic syntax) is accepted the same way.</p>
+
+    <h3>What gets skipped, and why</h3>
+    <div class="table-wrap"><table>
+      <tr><th>Line looks like</th><th>Why it's skipped</th></tr>
+      <tr><td><code>||doubleclick.net^$third-party</code></td><td>Network filter — ohm only does cosmetic filters, never blocks requests</td></tr>
+      <tr><td><code>x.com#@#.ad</code></td><td>Exception rule — nothing to except, since ohm doesn't ship default rules</td></tr>
+      <tr><td><code>x.com##+js(...)</code></td><td>Scriptlet injection — out of scope, only plain content-script behavior is supported</td></tr>
+      <tr><td><code>x.com##^script:has-text(...)</code></td><td>HTML filter — not implementable as a content-script style/DOM tweak</td></tr>
+      <tr><td><code>*##.ad</code> or <code>example.*##.ad</code></td><td>Wildcard host — ohm needs a concrete host to scope the extension's permissions to</td></tr>
+    </table></div>
+    <p>Every skipped line is listed with its line number and reason in the <code>README.md</code> bundled into your download, so nothing disappears silently at import time.</p>
+
+    <h3>Supported procedural operators</h3>
+    <p>Beyond plain CSS selectors (which just get hidden with <code>display: none !important</code>), ohm supports one procedural operator per rule, in the form <code>selector:op(argument)</code>:</p>
+    <div class="table-wrap"><table>
+      <tr><th>Operator</th><th>Example</th><th>What it does</th></tr>
+      <tr><td class="op">has-text</td><td><code>span:has-text(Sponsored)</code></td><td>Hides the matched element if its text content includes the given string</td></tr>
+      <tr><td class="op">upward</td><td><code>span:upward(3)</code></td><td>Walks up 3 parent elements from the match and hides that ancestor instead</td></tr>
+      <tr><td class="op">upward</td><td><code>span:upward(.card)</code></td><td>Non-numeric argument: hides the nearest ancestor matching that selector, via <code>closest()</code></td></tr>
+      <tr><td class="op">nth-ancestor</td><td><code>span:nth-ancestor(2)</code></td><td>Alias for the numeric form of <code>upward</code></td></tr>
+      <tr><td class="op">remove-class</td><td><code>b:remove-class(badge-verified)</code></td><td>Strips one or more classes (comma-separated) from the match, leaving it in place</td></tr>
+      <tr><td class="op">remove-attr</td><td><code>a:remove-attr(target)</code></td><td>Strips one or more attributes (comma-separated) from the match</td></tr>
+      <tr><td class="op">remove</td><td><code>.toast:remove()</code></td><td>Removes the matched element from the DOM entirely</td></tr>
+      <tr><td class="op">style</td><td><code>.card:style(opacity: 0.4;)</code></td><td>Appends raw CSS declarations to the match's inline style — include <code>!important</code> yourself if you need it</td></tr>
+    </table></div>
+
+    <div class="callout">
+      <p><strong>Only one procedural operator per rule.</strong> ohm's content script matches each rule against a single flat pattern, <code>base-selector:op(argument)</code>, anchored to the end of the string. It cannot parse two chained or nested ops in one selector.</p>
+      <p class="bad"><strong>Won't work:</strong> <code>div:has(> span:has-text("Suggested Videos")):upward(6)</code> — nesting <code>:has-text()</code> inside <code>:has()</code>, then chaining <code>:upward()</code> after it. This parses without any error and ships in your zip, but silently matches nothing at runtime, because the resulting "base selector" ohm tries to run is left with unbalanced parentheses.</p>
+      <p class="good"><strong>Works:</strong> <code>span:has-text(Suggested Videos)</code> — one flat operator, applied directly. If you need to hide a specific ancestor rather than the text node itself, use <code>:upward()</code> alone against the most specific selector you can find for that ancestor, rather than combining it with a text match.</p>
+    </div>
+
+    <h2 id="durability"><span class="num">04</span>Durability: which selectors last</h2>
+    <p>This is the single highest-value thing to get right in your list, because it's the difference between rules that survive a year and rules that break every time a site redeploys its frontend.</p>
+    <h3>Fragile — avoid when you have a choice</h3>
+    <ul>
+      <li><strong>Generated atomic classes</strong>, e.g. <code>.r-1w6e6rj</code>, <code>.css-1x9f3mk</code>. These come from CSS-in-JS/atomic-CSS build tooling and are re-generated on every deploy. A selector built entirely out of them can go dead the next time the site ships.</li>
+      <li><strong>Long chained class lists</strong>, e.g. <code>.css-1dbjc4n.r-xoduu5.r-1udh08x</code>. Same problem, compounded — any one class regenerating breaks the whole selector.</li>
+    </ul>
+    <h3>Durable — prefer these</h3>
+    <ul>
+      <li><strong><code>[data-testid]</code></strong> — usually added deliberately for the site's own automated tests, which gives it more inertia across redeploys than a build artifact.</li>
+      <li><strong><code>[aria-label]</code> / <code>[aria-labelledby]</code></strong> — accessibility attributes, which teams are slower to churn since screen readers depend on them.</li>
+      <li><strong>Semantic structure</strong> — element type, stable IDs, or a durable ancestor combined with <code>:has-text()</code> on real copy the site is unlikely to reword.</li>
+    </ul>
+    <p>When both exist for the same element, prefer the attribute selector. If only a generated class is available, it'll probably still work today — just expect to revisit it eventually, and know that when it silently stops, the fix is almost always "find the new generated class and swap it," not "the whole approach is broken."</p>
+
+    <h2 id="troubleshooting"><span class="num">05</span>Troubleshooting</h2>
+    <p>ohm's own principle is to degrade loudly, not silently — but a rule that's syntactically valid and simply targets the wrong element has no way to announce that. Here's how to tell the difference between "not installed right" and "the selector stopped matching."</p>
+    <h3>Confirm the extension is even running</h3>
+    <ol>
+      <li>Open <code>chrome://extensions</code> and confirm ohm is listed and enabled, with no errors badge.</li>
+      <li>On a page one of your rules targets, open DevTools → Elements, and search (Ctrl/Cmd+F in the panel) for a <code>&lt;style&gt;</code> tag containing one of your selectors. If your list had any plain CSS rules for that host, this tag should exist — if it doesn't, the content script isn't running on that page at all (wrong host scoping is the usual cause).</li>
+    </ol>
+    <h3>A CSS rule isn't hiding anything</h3>
+    <p>Copy the selector out of the injected <code>&lt;style&gt;</code> tag and paste it into the DevTools console as <code>document.querySelectorAll('your-selector')</code>. An empty result means the selector no longer matches anything on the page — the site changed its markup. Zero results is the most common failure mode and is almost always a durability problem (see above).</p>
+    <h3>A procedural rule (has-text, upward, etc.) isn't working</h3>
+    <ul>
+      <li><strong>Check for chaining.</strong> The single most common cause — see the callout in the syntax reference above. If your original selector nests or chains two operators, it silently no-ops.</li>
+      <li><strong>Check the base selector matches anything.</strong> Same <code>document.querySelectorAll()</code> test as above, run against just the part of your selector before the <code>:op(...)</code>.</li>
+      <li><strong>Path-scoped hosts get flattened.</strong> A uBO rule like <code>example.com/profile##selector</code> scopes to that path in uBO. ohm only scopes by host — the path is dropped, and the rule runs on all of <code>example.com</code>. Usually harmless, but worth knowing if you were relying on the path restriction.</li>
+    </ul>
+
+    <h2 id="faq"><span class="num">06</span>FAQ</h2>
+    <h3>Why did uBlock Origin stop working?</h3>
+    <p>Chrome removed the Manifest V2 code paths in 2025, including the enterprise policy that had been keeping MV2 extensions alive. uBlock Origin's full feature set — network-level blocking via <code>webRequestBlocking</code> — depends on APIs Manifest V3 doesn't have. uBlock Origin Lite is Chrome's sanctioned MV3 replacement, but it's deliberately declarative: no custom filters, no element picker, no dashboard.</p>
+    <h3>Why can't ohm block ads or network requests?</h3>
+    <p>By design, not by platform limitation. Cosmetic filtering — hiding elements with CSS after the page loads — never depended on the APIs MV3 removed; it's just a content script, which MV3 still supports fine. Network-level blocking is a different, larger problem this project isn't trying to solve. If you want that too, run uBlock Origin Lite alongside ohm — they don't conflict.</p>
+    <h3>Is my filter list private?</h3>
+    <p>Yes. The generator runs entirely in your browser tab — there's no server it talks to, and the extension it produces has zero network permissions. You can verify this yourself: view-source the <a href="../">generator page</a>, or read the roughly 250-line <code>content.js</code> that ends up in your download.</p>
+    <h3>Why "Load unpacked" instead of the Chrome Web Store?</h3>
+    <p>Every list is different, so every generated extension is a unique, personal build — there's nothing generic to publish. Chrome Web Store review for extensions touching social media sites is also slow and unpredictable. Load unpacked is a few extra clicks in exchange for skipping all of that.</p>
+
+    <footer>
+      <span>no network</span><span>·</span><a href="../">generator</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a><span>·</span><span>MIT</span>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

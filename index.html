@@ -12,7 +12,8 @@
 <link rel="manifest" href="site.webmanifest" />
 <meta property="og:title" content="ohm — adds uBlock Origin custom filters back to Chrome" />
 <meta property="og:description" content="Paste your uBlock Origin cosmetic filter list, get a Chrome extension that runs it. Nothing leaves this tab." />
-<meta property="og:image" content="https://wbnns.github.io/ohm/assets/og.png" />
+<meta property="og:image" content="https://ohm.wbnns.com/assets/og.png" />
+<meta property="og:url" content="https://ohm.wbnns.com/" />
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
@@ -72,7 +73,7 @@
       To install: unzip it, open <code style="color: var(--fg);">chrome://extensions</code>, switch on Developer mode, click Load unpacked, pick the folder.
     </p>
     <p style="margin: 18px 0 0; font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap;">
-      <span>no network</span><span>·</span><span>only the hosts your rules name</span><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a><span>·</span><span>MIT</span>
+      <span>no network</span><span>·</span><span>only the hosts your rules name</span><span>·</span><a href="docs/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">docs</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a><span>·</span><span>MIT</span>
     </p>
 
   </main>
@@ -204,7 +205,7 @@ const OHM_CONTENT = `// ohm — content script. No network access, by constructi
   }
 
   const parseProc = (sel) => {
-    const m = sel.match(/^(.*?):(has-text|upward|nth-ancestor|remove-class|remove-attr|remove)\\((.*)\\)$/);
+    const m = sel.match(/^(.*?):(has-text|upward|nth-ancestor|remove-class|remove-attr|remove|style)\\((.*)\\)$/);
     return m ? { base: m[1] || "*", op: m[2], arg: m[3] } : null;
   };
   const ops = proc.map(p => parseProc(p.s)).filter(Boolean);
@@ -229,6 +230,8 @@ const OHM_CONTENT = `// ohm — content script. No network access, by constructi
           arg.split(/[,|]/).forEach(a => el.removeAttribute(a.trim()));
         } else if (op === "remove") {
           el.remove();
+        } else if (op === "style") {
+          el.style.cssText += ";" + arg;
         }
       }
     }
