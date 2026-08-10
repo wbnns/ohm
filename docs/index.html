@@ -33,7 +33,10 @@
   h1 { font-size: clamp(27px, 4.2vw, 38px); font-weight: 700; line-height: 1.22; letter-spacing: -0.035em; margin: 0 0 14px; text-wrap: pretty; }
   h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; margin: 56px 0 14px; scroll-margin-top: 24px; }
   h2 .num { color: rgba(var(--fg-rgb), 0.4); font-weight: 500; margin-right: 8px; }
-  h3 { font-size: 14.5px; font-weight: 700; margin: 26px 0 8px; }
+  h3 { font-size: 14.5px; font-weight: 700; margin: 26px 0 8px; scroll-margin-top: 24px; }
+  h2 .anchor, h3 .anchor { opacity: 0; margin-left: 9px; color: rgba(var(--fg-rgb), 0.35); border-bottom: 0; font-weight: 400; transition: opacity 0.12s ease, color 0.12s ease; }
+  h2:hover .anchor, h3:hover .anchor, .anchor:focus-visible { opacity: 1; }
+  .anchor:hover, .anchor:focus-visible { color: var(--accent-hi); }
   p { margin: 0 0 14px; color: rgba(var(--fg-rgb), 0.82); max-width: 68ch; }
   ul, ol { margin: 0 0 14px; padding-left: 22px; color: rgba(var(--fg-rgb), 0.82); }
   li { margin: 0 0 6px; max-width: 66ch; }
@@ -93,7 +96,7 @@
       </ol>
     </nav>
 
-    <h2 id="what-ohm-is"><span class="num">01</span>What ohm is (and isn't)</h2>
+    <h2 id="what-ohm-is"><span class="num">01</span>What ohm is (and isn't)<a class="anchor" href="#what-ohm-is" aria-label="Link to this section">#</a></h2>
     <p>ohm runs your own hand-written cosmetic filters — rules like <code>x.com##div[data-testid="metadata"]</code> — as a Chrome extension, scoped to only the hosts those rules mention. That's the entire feature set. It exists because Chrome's Manifest V2 removal killed uBlock Origin, and with it, years of personal cosmetic-filter lists that had nowhere left to run.</p>
     <p>A few things it deliberately doesn't do, stated plainly because the category invites scope creep:</p>
     <ul>
@@ -103,7 +106,7 @@
       <li><strong>Not a wellness product.</strong> No streaks, no time tracking, no shaming. It hides elements. That's the whole contract.</li>
     </ul>
 
-    <h2 id="how-it-works"><span class="num">02</span>How it works</h2>
+    <h2 id="how-it-works"><span class="num">02</span>How it works<a class="anchor" href="#how-it-works" aria-label="Link to this section">#</a></h2>
     <p>The <a href="../">generator</a> parses your pasted list entirely in your browser tab — nothing you paste is ever sent anywhere. It groups the surviving rules by host, builds a Manifest V3 extension around them, and packages it as a zip:</p>
     <ol>
       <li><strong>Paste.</strong> A uBlock Origin cosmetic filter list — the same <code>.txt</code> you were using before.</li>
@@ -113,10 +116,10 @@
     </ol>
     <p>There's no server anywhere in this pipeline. The generator is a static page; the extension it produces has no <code>host_permissions</code> beyond the sites you named and no code path that could reach the network even if it wanted to.</p>
 
-    <h2 id="syntax"><span class="num">03</span>Filter syntax reference</h2>
+    <h2 id="syntax"><span class="num">03</span>Filter syntax reference<a class="anchor" href="#syntax" aria-label="Link to this section">#</a></h2>
     <p>Each rule is one line: <code>host##selector</code>. The host can be a comma-separated list (<code>x.com,pro.x.com##...</code>); each host gets its own copy of the rule. <code>host#?#selector</code> (uBO's "extended" cosmetic syntax) is accepted the same way.</p>
 
-    <h3>What gets skipped, and why</h3>
+    <h3 id="skipped-lines">What gets skipped, and why<a class="anchor" href="#skipped-lines" aria-label="Link to this section">#</a></h3>
     <div class="table-wrap"><table>
       <tr><th>Line looks like</th><th>Why it's skipped</th></tr>
       <tr><td><code>||doubleclick.net^$third-party</code></td><td>Network filter — ohm only does cosmetic filters, never blocks requests</td></tr>
@@ -127,7 +130,7 @@
     </table></div>
     <p>Every skipped line is listed with its line number and reason in the <code>README.md</code> bundled into your download, so nothing disappears silently at import time.</p>
 
-    <h3>Supported procedural operators</h3>
+    <h3 id="operators">Supported procedural operators<a class="anchor" href="#operators" aria-label="Link to this section">#</a></h3>
     <p>Beyond plain CSS selectors (which just get hidden with <code>display: none !important</code>), ohm supports one procedural operator per rule, in the form <code>selector:op(argument)</code>:</p>
     <div class="table-wrap"><table>
       <tr><th>Operator</th><th>Example</th><th>What it does</th></tr>
@@ -147,14 +150,14 @@
       <p class="good"><strong>Works:</strong> <code>span:has-text(Suggested Videos)</code> — one flat operator, applied directly. If you need to hide a specific ancestor rather than the text node itself, use <code>:upward()</code> alone against the most specific selector you can find for that ancestor, rather than combining it with a text match.</p>
     </div>
 
-    <h2 id="durability"><span class="num">04</span>Durability: which selectors last</h2>
+    <h2 id="durability"><span class="num">04</span>Durability: which selectors last<a class="anchor" href="#durability" aria-label="Link to this section">#</a></h2>
     <p>This is the single highest-value thing to get right in your list, because it's the difference between rules that survive a year and rules that break every time a site redeploys its frontend.</p>
-    <h3>Fragile — avoid when you have a choice</h3>
+    <h3 id="fragile-selectors">Fragile — avoid when you have a choice<a class="anchor" href="#fragile-selectors" aria-label="Link to this section">#</a></h3>
     <ul>
       <li><strong>Generated atomic classes</strong>, e.g. <code>.r-1w6e6rj</code>, <code>.css-1x9f3mk</code>. These come from CSS-in-JS/atomic-CSS build tooling and are re-generated on every deploy. A selector built entirely out of them can go dead the next time the site ships.</li>
       <li><strong>Long chained class lists</strong>, e.g. <code>.css-1dbjc4n.r-xoduu5.r-1udh08x</code>. Same problem, compounded — any one class regenerating breaks the whole selector.</li>
     </ul>
-    <h3>Durable — prefer these</h3>
+    <h3 id="durable-selectors">Durable — prefer these<a class="anchor" href="#durable-selectors" aria-label="Link to this section">#</a></h3>
     <ul>
       <li><strong><code>[data-testid]</code></strong> — usually added deliberately for the site's own automated tests, which gives it more inertia across redeploys than a build artifact.</li>
       <li><strong><code>[aria-label]</code> / <code>[aria-labelledby]</code></strong> — accessibility attributes, which teams are slower to churn since screen readers depend on them.</li>
@@ -162,30 +165,30 @@
     </ul>
     <p>When both exist for the same element, prefer the attribute selector. If only a generated class is available, it'll probably still work today — just expect to revisit it eventually, and know that when it silently stops, the fix is almost always "find the new generated class and swap it," not "the whole approach is broken."</p>
 
-    <h2 id="troubleshooting"><span class="num">05</span>Troubleshooting</h2>
+    <h2 id="troubleshooting"><span class="num">05</span>Troubleshooting<a class="anchor" href="#troubleshooting" aria-label="Link to this section">#</a></h2>
     <p>ohm's own principle is to degrade loudly, not silently — but a rule that's syntactically valid and simply targets the wrong element has no way to announce that. Here's how to tell the difference between "not installed right" and "the selector stopped matching."</p>
-    <h3>Confirm the extension is even running</h3>
+    <h3 id="check-running">Confirm the extension is even running<a class="anchor" href="#check-running" aria-label="Link to this section">#</a></h3>
     <ol>
       <li>Open <code>chrome://extensions</code> and confirm ohm is listed and enabled, with no errors badge.</li>
       <li>On a page one of your rules targets, open DevTools → Elements, and search (Ctrl/Cmd+F in the panel) for a <code>&lt;style&gt;</code> tag containing one of your selectors. If your list had any plain CSS rules for that host, this tag should exist — if it doesn't, the content script isn't running on that page at all (wrong host scoping is the usual cause).</li>
     </ol>
-    <h3>A CSS rule isn't hiding anything</h3>
+    <h3 id="css-not-matching">A CSS rule isn't hiding anything<a class="anchor" href="#css-not-matching" aria-label="Link to this section">#</a></h3>
     <p>Copy the selector out of the injected <code>&lt;style&gt;</code> tag and paste it into the DevTools console as <code>document.querySelectorAll('your-selector')</code>. An empty result means the selector no longer matches anything on the page — the site changed its markup. Zero results is the most common failure mode and is almost always a durability problem (see above).</p>
-    <h3>A procedural rule (has-text, upward, etc.) isn't working</h3>
+    <h3 id="procedural-not-matching">A procedural rule (has-text, upward, etc.) isn't working<a class="anchor" href="#procedural-not-matching" aria-label="Link to this section">#</a></h3>
     <ul>
       <li><strong>Check for chaining.</strong> The single most common cause — see the callout in the syntax reference above. If your original selector nests or chains two operators, it silently no-ops.</li>
       <li><strong>Check the base selector matches anything.</strong> Same <code>document.querySelectorAll()</code> test as above, run against just the part of your selector before the <code>:op(...)</code>.</li>
       <li><strong>Path-scoped hosts get flattened.</strong> A uBO rule like <code>example.com/profile##selector</code> scopes to that path in uBO. ohm only scopes by host — the path is dropped, and the rule runs on all of <code>example.com</code>. Usually harmless, but worth knowing if you were relying on the path restriction.</li>
     </ul>
 
-    <h2 id="faq"><span class="num">06</span>FAQ</h2>
-    <h3>Why did uBlock Origin stop working?</h3>
+    <h2 id="faq"><span class="num">06</span>FAQ<a class="anchor" href="#faq" aria-label="Link to this section">#</a></h2>
+    <h3 id="why-ubo-broke">Why did uBlock Origin stop working?<a class="anchor" href="#why-ubo-broke" aria-label="Link to this question">#</a></h3>
     <p>Chrome removed the Manifest V2 code paths in 2025, including the enterprise policy that had been keeping MV2 extensions alive. uBlock Origin's full feature set — network-level blocking via <code>webRequestBlocking</code> — depends on APIs Manifest V3 doesn't have. uBlock Origin Lite is Chrome's sanctioned MV3 replacement, but it's deliberately declarative: no custom filters, no element picker, no dashboard.</p>
-    <h3>Why can't ohm block ads or network requests?</h3>
+    <h3 id="why-no-ads">Why can't ohm block ads or network requests?<a class="anchor" href="#why-no-ads" aria-label="Link to this question">#</a></h3>
     <p>By design, not by platform limitation. Cosmetic filtering — hiding elements with CSS after the page loads — never depended on the APIs MV3 removed; it's just a content script, which MV3 still supports fine. Network-level blocking is a different, larger problem this project isn't trying to solve. If you want that too, run uBlock Origin Lite alongside ohm — they don't conflict.</p>
-    <h3>Is my filter list private?</h3>
+    <h3 id="is-it-private">Is my filter list private?<a class="anchor" href="#is-it-private" aria-label="Link to this question">#</a></h3>
     <p>Yes. The generator runs entirely in your browser tab — there's no server it talks to, and the extension it produces has zero network permissions. You can verify this yourself: view-source the <a href="../">generator page</a>, or read the roughly 250-line <code>content.js</code> that ends up in your download.</p>
-    <h3>Why "Load unpacked" instead of the Chrome Web Store?</h3>
+    <h3 id="why-load-unpacked">Why "Load unpacked" instead of the Chrome Web Store?<a class="anchor" href="#why-load-unpacked" aria-label="Link to this question">#</a></h3>
     <p>Every list is different, so every generated extension is a unique, personal build — there's nothing generic to publish. Chrome Web Store review for extensions touching social media sites is also slow and unpredictable. Load unpacked is a few extra clicks in exchange for skipping all of that.</p>
 
     <footer>
