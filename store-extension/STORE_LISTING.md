@@ -6,38 +6,38 @@ to the site. Everything below is a draft; edit freely before submitting.
 ## Title
 
 ```
-ohm — custom cosmetic filters
+ohm
 ```
 
 ## Short description (≤132 characters)
 
 ```
-Run your own uBlock Origin cosmetic filters in Chrome. Paste a list, it hides what you tell it to. No ad blocking, no network access.
+Hide anything on a page with your own rules. No ads blocked, nothing sent anywhere. Compatible with uBlock Origin-style filters.
 ```
-(132 chars exactly — trim if the Dashboard counts differently.)
+(128 chars.)
 
 ## Long description
 
 ```
-ohm runs your own hand-written cosmetic filters — rules like
-x.com##div[data-testid="metadata"] — as a Chrome extension. It exists
-because Chrome's Manifest V2 removal broke uBlock Origin, and with it,
-years of personal cosmetic-filter lists that had nowhere left to run.
+ohm hides things on a page using rules you write yourself — no waiting
+on someone else's list, no account, nothing tracked.
 
-What it does: hides page elements matching CSS selectors and a small set
-of procedural operators (has-text, upward, nth-ancestor, remove-class,
-remove-attr, remove, style) — the same syntax uBlock Origin's cosmetic
-filters used. Paste your list on the settings page, save, done.
+It understands the same rule format uBlock Origin used for its custom
+filters, the kind that stopped working when Chrome dropped support for
+uBlock Origin's old extension format. If you've got a list of those,
+paste it in and it'll work again.
 
-What it doesn't do: block ads, block network requests, track your
-browsing, or send anything anywhere. There is no analytics code, no
-telemetry, and no network permission in this extension — it has no way
-to reach the internet even if it wanted to. Your rules live in this
-browser's local extension storage only.
+What it does: hides whatever you tell it to, on whatever site you tell
+it to, using rules like "on this website, hide this thing."
 
-Full source, docs, and a zero-permission alternative (build a personal
-extension scoped to only your own hosts, no Chrome Web Store install
-required) at https://ohm.wbnns.com.
+What it doesn't do: block ads, block network requests, track what you
+do, or send anything anywhere. It has no permission to use the internet
+at all, so there's no way for it to send your rules or your browsing
+anywhere. Everything stays saved on your own computer.
+
+Want it to ask for less up front? There's a version of ohm that builds
+a personal copy with permission for only the exact sites your own rules
+mention, no Chrome Web Store install needed: https://ohm.wbnns.com
 ```
 
 ## Category

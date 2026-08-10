@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "ohm — custom cosmetic filters",
+  "name": "ohm",
   "version": "1.0.0",
-  "description": "Runs your own uBlock Origin cosmetic filter rules. Paste a list, it hides what you tell it to. No ad blocking, no network access.",
+  "description": "Hide anything on a page with your own rules. No ads blocked, nothing sent anywhere. Compatible with uBlock Origin-style filters.",
   "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [
