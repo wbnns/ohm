@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ohm — adds uBlock Origin custom filters back to Chrome</title>
+<meta name="description" content="Paste your uBlock Origin cosmetic filter list, get a Chrome extension that runs it. Nothing leaves this tab." />
+<meta name="theme-color" content="#041a1a" />
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="assets/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+<link rel="manifest" href="site.webmanifest" />
+<meta property="og:title" content="ohm — adds uBlock Origin custom filters back to Chrome" />
+<meta property="og:description" content="Paste your uBlock Origin cosmetic filter list, get a Chrome extension that runs it. Nothing leaves this tab." />
+<meta property="og:image" content="https://wbnns.github.io/ohm/assets/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #041a1a; --panel: #072121; --panel-2: #0a2828; --fg: #eafaf6; --fg-rgb: 234,250,246;
+          --accent: oklch(0.74 0.17 25); --accent-hi: oklch(0.82 0.15 25); --accent-rgb: 240,124,98;
+          --good: oklch(0.80 0.14 170); }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(var(--accent-rgb), 0.35); }
+  a:hover { color: var(--accent-hi); border-bottom-color: var(--accent-hi); }
+  ::selection { background: var(--accent); color: var(--bg); }
+  textarea::placeholder { color: rgba(var(--fg-rgb), 0.3); }
+  textarea:focus { outline: none; }
+  #sample-btn:hover { color: var(--fg); }
+  #download-btn:not(:disabled):hover { background: var(--accent-hi); }
+</style>
+</head>
+<body>
+
+<div style="background: var(--bg); color: var(--fg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 56px 28px; font-size: 15px; line-height: 1.7;">
+  <main style="width: 100%; max-width: 660px;">
+
+    <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 44px;">
+      <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+        <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+        <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+      </svg>
+      <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em;">ohm</span>
+    </div>
+
+    <h1 style="font-size: clamp(27px, 4.2vw, 40px); font-weight: 700; line-height: 1.24; letter-spacing: -0.035em; margin: 0 0 20px; text-wrap: pretty;">
+      Adds uBlock Origin custom filters back to <span style="color: var(--accent);">Chrome</span>.
+    </h1>
+    <p style="font-size: 16px; color: rgba(var(--fg-rgb), 0.72); margin: 0 0 44px; max-width: 52ch; text-wrap: pretty;">
+      Paste your filter list. Get an extension that runs it. Nothing leaves this tab.
+    </p>
+
+    <textarea id="rules-input" spellcheck="false" placeholder="x.com##div[data-testid=&quot;metadata&quot;]&#10;reddit.com##shreddit-comments-page-ad&#10;news.ycombinator.com##.pagetop:has-text(logout)" style="width: 100%; min-height: 190px; resize: vertical; background: var(--panel); color: var(--fg); border: 1px solid rgba(var(--fg-rgb), 0.16); border-radius: 3px; padding: 16px; font-family: inherit; font-size: 13.5px; line-height: 1.8; display: block;"></textarea>
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 14px;">
+      <button type="button" id="sample-btn" style="background: none; border: 0; color: rgba(var(--fg-rgb), 0.6); font-family: inherit; font-size: 12.5px; cursor: pointer; padding: 2px 0; border-bottom: 1px solid rgba(var(--fg-rgb), 0.25);">load a sample</button>
+      <span id="summary" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6);">waiting for input</span>
+    </div>
+
+    <div style="margin-top: 32px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+      <button type="button" id="download-btn" disabled style="background: var(--accent); color: var(--bg); font-family: inherit; font-weight: 700; font-size: 14px; padding: 15px 26px; border: 0; border-radius: 999px; cursor: pointer; opacity: 0.45;">↓ Download extension</button>
+      <span id="hint" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55);">paste at least one host##selector rule</span>
+    </div>
+
+    <p style="margin: 52px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 13.5px; line-height: 1.85; color: rgba(var(--fg-rgb), 0.62);">
+      To install: unzip it, open <code style="color: var(--fg);">chrome://extensions</code>, switch on Developer mode, click Load unpacked, pick the folder.
+    </p>
+    <p style="margin: 18px 0 0; font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap;">
+      <span>no network</span><span>·</span><span>only the hosts your rules name</span><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a><span>·</span><span>MIT</span>
+    </p>
+
+  </main>
+</div>
+
+<script>
+const SAMPLE = [
+  "! my list",
+  "x.com##div[data-testid=\"metadata\"]",
+  "x.com##aside[aria-label=\"Who to follow\"]",
+  "x.com,pro.x.com##div[data-testid=\"premium-signup-tab\"]",
+  "reddit.com##shreddit-comments-page-ad",
+  "reddit.com###right-sidebar-container",
+  "news.ycombinator.com##.pagetop:has-text(logout)",
+  "youtube.com###related:upward(1)",
+  "zora.co##div.css-1x9f3mk",
+  "||doubleclick.net^$third-party"
+].join("\n");
+
+const PROC = /:(-abp-)?(has-text|matches-css(-before|-after)?|upward|nth-ancestor|xpath|watch-attr|min-text-length|others|matches-path|matches-media|remove|remove-class|remove-attr|style)\(/;
+const PROC_OK = ["has-text", "upward", "nth-ancestor", "remove-class", "remove-attr", "remove", "style"];
+
+function parse(text) {
+  const rules = [], skipped = [], seen = new Set();
+  text.split(/\r?\n/).forEach((raw, i) => {
+    const line = raw.trim();
+    if (!line || line[0] === "!" || line.startsWith("[Adblock") || line.startsWith("# ")) return;
+    const skip = (why) => skipped.push({ line: i + 1, raw: line, why });
+    if (/#@#/.test(line)) return skip("exception rule");
+    let hit = null;
+    for (const s of ["#?#", "##"]) { const k = line.indexOf(s); if (k > -1) { hit = [k, s]; break; } }
+    if (!hit) return skip("network filter — ohm does not block requests");
+    const [k, sep] = hit;
+    const left = line.slice(0, k);
+    const sel = line.slice(k + sep.length).trim();
+    if (!sel) return skip("empty selector");
+    if (sel.startsWith("+js(")) return skip("scriptlet");
+    if (sel.startsWith("^")) return skip("HTML filter");
+    if (!left) return skip("no host — ohm needs a host to stay scoped");
+    const hosts = [];
+    for (const d0 of left.split(",")) {
+      const d = d0.trim();
+      if (!d || d[0] === "~") continue;
+      if (d.endsWith(".*") || d.startsWith("*.") || d === "*") continue;
+      hosts.push(d.includes("/") ? d.split("/")[0] : d);
+    }
+    if (!hosts.length) return skip("wildcard domain can't be scoped");
+    let procedural = null;
+    if (PROC.test(sel)) {
+      const ops = [...sel.matchAll(/:(-abp-)?([a-z-]+)\(/g)].map(x => x[2]).filter(o => PROC.test(":" + o + "("));
+      const bad = ops.find(o => !PROC_OK.includes(o));
+      if (bad) return skip(":" + bad + "() has no MV3 equivalent");
+      procedural = ops;
+    }
+    for (const host of hosts) {
+      const key = host + "|" + sel;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      rules.push({ host, selector: sel, procedural });
+    }
+  });
+  return { rules, skipped, hosts: [...new Set(rules.map(r => r.host))].sort() };
+}
+
+function buildFiles(p) {
+  const byHost = {};
+  for (const r of p.rules) {
+    byHost[r.host] = byHost[r.host] || { css: [], proc: [] };
+    if (r.procedural) byHost[r.host].proc.push({ s: r.selector });
+    else byHost[r.host].css.push(r.selector);
+  }
+  const manifest = {
+    manifest_version: 3, name: "ohm", version: "1.1.0",
+    description: "Runs your own cosmetic filter rules. No network access.",
+    permissions: [], host_permissions: [],
+    content_scripts: [{ matches: p.hosts.map(h => "*://*." + h + "/*"), js: ["rules.js", "content.js"], run_at: "document_start", all_frames: false }]
+  };
+  const readme = ["# ohm", "", "Generated from a " + p.rules.length + "-rule list.", "Hosts: " + p.hosts.join(", "), "",
+    "## Install", "1. chrome://extensions -> Developer mode", "2. Load unpacked -> pick this folder", "",
+    "## Skipped lines", ...(p.skipped.length ? p.skipped.map(s => "- L" + s.line + " `" + s.raw + "` — " + s.why) : ["(none)"]), "", "MIT."].join("\n");
+  return [
+    ["manifest.json", JSON.stringify(manifest, null, 2) + "\n"],
+    ["rules.js", "// generated by ohm — edit freely, then reload the extension\nconst OHM_RULES = " + JSON.stringify(byHost, null, 2) + ";\n"],
+    ["content.js", OHM_CONTENT],
+    ["README.md", readme]
+  ];
+}
+
+function zip(files) {
+  const enc = new TextEncoder();
+  const table = (() => { const t = new Uint32Array(256); for (let i = 0; i < 256; i++) { let c = i; for (let j = 0; j < 8; j++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[i] = c >>> 0; } return t; })();
+  const crc32 = (u8) => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = table[(c ^ u8[i]) & 0xFF] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  const parts = [], central = [];
+  let offset = 0;
+  for (const [name, content] of files) {
+    const nameB = enc.encode("ohm/" + name), data = enc.encode(content), crc = crc32(data);
+    const lh = new Uint8Array(30 + nameB.length), dv = new DataView(lh.buffer);
+    dv.setUint32(0, 0x04034b50, true); dv.setUint16(4, 20, true);
+    dv.setUint32(14, crc, true); dv.setUint32(18, data.length, true); dv.setUint32(22, data.length, true);
+    dv.setUint16(26, nameB.length, true);
+    lh.set(nameB, 30);
+    parts.push(lh, data);
+    const cd = new Uint8Array(46 + nameB.length), cv = new DataView(cd.buffer);
+    cv.setUint32(0, 0x02014b50, true); cv.setUint16(4, 20, true); cv.setUint16(6, 20, true);
+    cv.setUint32(16, crc, true); cv.setUint32(20, data.length, true); cv.setUint32(24, data.length, true);
+    cv.setUint16(28, nameB.length, true); cv.setUint32(42, offset, true);
+    cd.set(nameB, 46);
+    central.push(cd);
+    offset += lh.length + data.length;
+  }
+  const cdSize = central.reduce((a, c) => a + c.length, 0);
+  const end = new Uint8Array(22), ev = new DataView(end.buffer);
+  ev.setUint32(0, 0x06054b50, true); ev.setUint16(8, files.length, true); ev.setUint16(10, files.length, true);
+  ev.setUint32(12, cdSize, true); ev.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end], { type: "application/zip" });
+}
+
+const OHM_CONTENT = `// ohm — content script. No network access, by construction.
+(() => {
+  const host = location.hostname.replace(/^www\\./, "");
+  const key = Object.keys(OHM_RULES).find(h => host === h || host.endsWith("." + h));
+  if (!key) return;
+  const { css, proc } = OHM_RULES[key];
+
+  if (css.length) {
+    const style = document.createElement("style");
+    style.textContent = css.join(",\\n") + " { display: none !important; }";
+    (document.head || document.documentElement).appendChild(style);
+  }
+
+  const parseProc = (sel) => {
+    const m = sel.match(/^(.*?):(has-text|upward|nth-ancestor|remove-class|remove-attr|remove)\\((.*)\\)$/);
+    return m ? { base: m[1] || "*", op: m[2], arg: m[3] } : null;
+  };
+  const ops = proc.map(p => parseProc(p.s)).filter(Boolean);
+
+  const apply = () => {
+    for (const { base, op, arg } of ops) {
+      let nodes;
+      try { nodes = document.querySelectorAll(base); } catch { continue; }
+      for (const el of nodes) {
+        if (op === "has-text") {
+          const t = el.textContent || "";
+          if (t.includes(arg)) el.style.setProperty("display", "none", "important");
+        } else if (op === "upward" || op === "nth-ancestor") {
+          const n = parseInt(arg, 10);
+          let t = el;
+          if (Number.isNaN(n)) { try { t = el.closest(arg); } catch { t = null; } }
+          else for (let i = 0; i < n && t; i++) t = t.parentElement;
+          if (t) t.style.setProperty("display", "none", "important");
+        } else if (op === "remove-class") {
+          el.classList.remove(...arg.split(/[,|]/).map(s => s.trim()));
+        } else if (op === "remove-attr") {
+          arg.split(/[,|]/).forEach(a => el.removeAttribute(a.trim()));
+        } else if (op === "remove") {
+          el.remove();
+        }
+      }
+    }
+  };
+
+  const run = () => requestAnimationFrame(apply);
+  if (ops.length) {
+    run();
+    new MutationObserver(run).observe(document.documentElement, { childList: true, subtree: true });
+    for (const m of ["pushState", "replaceState"]) {
+      const orig = history[m];
+      history[m] = function () { const r = orig.apply(this, arguments); run(); return r; };
+    }
+    addEventListener("popstate", run);
+  }
+})();
+`;
+
+const input = document.getElementById("rules-input");
+const summaryEl = document.getElementById("summary");
+const hintEl = document.getElementById("hint");
+const downloadBtn = document.getElementById("download-btn");
+const sampleBtn = document.getElementById("sample-btn");
+
+let parsed = null;
+
+function render() {
+  const p = parsed;
+  const ready = !!(p && p.rules.length);
+  summaryEl.textContent = p
+    ? p.rules.length + " rule" + (p.rules.length === 1 ? "" : "s") + " · " + p.hosts.length + " host" + (p.hosts.length === 1 ? "" : "s") + (p.skipped.length ? " · " + p.skipped.length + " skipped" : "")
+    : "waiting for input";
+  hintEl.textContent = ready ? p.hosts.join(", ") : "paste at least one host##selector rule";
+  downloadBtn.disabled = !ready;
+  downloadBtn.style.opacity = ready ? "1" : "0.45";
+}
+
+function update() {
+  parsed = parse(input.value);
+  render();
+}
+
+input.addEventListener("input", update);
+
+sampleBtn.addEventListener("click", () => {
+  input.value = SAMPLE;
+  update();
+});
+
+downloadBtn.addEventListener("click", () => {
+  if (!parsed || !parsed.rules.length) return;
+  const url = URL.createObjectURL(zip(buildFiles(parsed)));
+  const a = document.createElement("a");
+  a.href = url; a.download = "ohm-extension.zip";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+});
+
+render();
+</script>
+</body>
+</html>
