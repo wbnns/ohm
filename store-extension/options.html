@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ohm — settings</title>
+<style>
+  :root { --bg: #041a1a; --panel: #072121; --fg: #eafaf6; --fg-rgb: 234,250,246;
+          --accent: #f07c62; --accent-hi: #f4967e; --accent-rgb: 240,124,98; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; color: var(--fg); font-size: 15px; line-height: 1.7; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); }
+  main { max-width: 660px; margin: 0 auto; padding: 56px 28px 80px; }
+  .logo { display: flex; align-items: center; gap: 11px; margin-bottom: 32px; }
+  .logo span { font-weight: 700; font-size: 18px; letter-spacing: -0.02em; }
+  h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.025em; margin: 0 0 10px; }
+  p.sub { font-size: 14.5px; color: rgba(var(--fg-rgb), 0.72); margin: 0 0 28px; max-width: 60ch; }
+  textarea { width: 100%; min-height: 220px; resize: vertical; background: var(--panel); color: var(--fg); border: 1px solid rgba(var(--fg-rgb), 0.16); border-radius: 3px; padding: 16px; font-family: inherit; font-size: 13.5px; line-height: 1.8; display: block; }
+  textarea:focus { outline: none; }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 14px; }
+  #summary { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6); }
+  .actions { margin-top: 24px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  button { background: var(--accent); color: var(--bg); font-family: inherit; font-weight: 700; font-size: 14px; padding: 13px 24px; border: 0; border-radius: 999px; cursor: pointer; }
+  button:hover { background: var(--accent-hi); }
+  #status { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); }
+  #status.ok { color: #7fd9b6; }
+  .panel { background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 3px; padding: 16px 20px; margin-top: 32px; }
+  .panel h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: rgba(var(--fg-rgb), 0.5); margin: 0 0 10px; font-weight: 500; }
+  .panel ul { margin: 0; padding-left: 20px; font-size: 13px; }
+  .panel li { margin-bottom: 6px; color: rgba(var(--fg-rgb), 0.8); }
+  .panel li code { background: rgba(var(--fg-rgb), 0.08); padding: 1px 5px; border-radius: 2px; }
+  .panel .empty { color: rgba(var(--fg-rgb), 0.45); font-style: normal; }
+  footer { margin-top: 48px; padding-top: 20px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); }
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">
+    <svg viewBox="0 0 104 104" width="20" height="20" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+      <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+      <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+    </svg>
+    <span>ohm settings</span>
+  </div>
+
+  <h1>Your filter rules</h1>
+  <p class="sub">Paste a uBlock Origin cosmetic filter list. It's parsed right here in this tab and saved to this browser's local extension storage — never sent anywhere.</p>
+
+  <textarea id="rules-input" spellcheck="false" placeholder='x.com##div[data-testid="metadata"]&#10;reddit.com##shreddit-comments-page-ad&#10;news.ycombinator.com##.pagetop:has-text(logout)'></textarea>
+
+  <div class="row">
+    <span id="summary">waiting for input</span>
+  </div>
+
+  <div class="actions">
+    <button type="button" id="save-btn">Save rules</button>
+    <span id="status"></span>
+  </div>
+
+  <div class="panel">
+    <h2>Skipped lines</h2>
+    <ul id="skipped-list"><li class="empty">(none)</li></ul>
+  </div>
+
+  <footer>
+    Content scripts only run on a page's <em>next</em> load — after saving, reload any open tabs where you want the change to apply. <a href="https://ohm.wbnns.com/docs/" target="_blank" rel="noopener">Full docs</a> · <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+  </footer>
+</main>
+<script src="ohm-parse.js"></script>
+<script src="options.js"></script>
+</body>
+</html>

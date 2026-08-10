@@ -57,7 +57,7 @@ Stating these plainly because the category invites scope creep:
 
 ## 5\. Principles
 
-1. **Scope to the sites in the rules.** The manifest declares only the hosts your rules actually target. No `<all_urls>`, ever. This is the differentiator and it's non-negotiable.  
+1. **Scope to the sites in the rules.** The manifest declares only the hosts your rules actually target. No `<all_urls>`, ever. This is the differentiator and it's non-negotiable. *(Caveat added when the Chrome Web Store listing shipped: that single shared package can't know your hosts in advance, so it declares broad `host_permissions` at install — the one deliberate, clearly-labeled exception. It still only **acts** on hosts your own saved rules name; see `docs/index.html#trust-but-verify`. The generator's output remains the zero-permission option this principle describes.)*  
 2. **No network.** No service worker, no fetch, no telemetry, no update channel. The extension cannot phone anywhere because it has no code that could.  
 3. **Readable in one sitting.** If a motivated user can't audit the whole thing in fifteen minutes, the trust story is gone. Cap the source at a size where that stays true.  
 4. **The rules file is the product surface.** One file, plain data, edit it in any editor. No proprietary format, no database, no export flow — the export is `cat rules.js`.  
@@ -81,12 +81,12 @@ This is what makes it worth a website.
 
 **Filter list import.** Paste a uBO cosmetic filter list, get a working extension. Parses `host##selector`, groups by host, translates the procedural syntax, and generates a scoped manifest containing only the hosts the list mentions. Runs entirely client-side — the list never leaves the browser, which is both the privacy story and the reason it can be a static site.
 
-Two delivery modes worth deciding between:
+Two delivery modes — shipped as both, not one or the other:
 
 - *Generator* — the landing page emits a downloadable folder, user loads it unpacked. Zero permissions problem, zero store review, but "load unpacked" is a real drop-off cliff.  
-- *Runtime* — one installed extension with a paste box, storing rules in `chrome.storage`. Far better UX, but it must declare broad host permissions up front, which forfeits Principle 1\.
+- *Runtime* — one installed extension with a paste box, storing rules in `chrome.storage`. Far better UX, but it must declare broad host permissions up front, which forfeits Principle 1 in the letter (not the spirit — see the Principle 1 caveat above).
 
-The generator preserves the thing that makes ohm defensible. Recommend generator for v1.1; revisit runtime only if drop-off proves fatal.
+Resolution: the open question below (§10.1) got decided directly rather than by the planned user test — ship both, simple/broad permissions for the Runtime version (`store-extension/`), generator kept as the lower-trust default. The generator remains what's linked first on the homepage.
 
 **Import report.** The port surfaced four real findings in a 47-rule list: a rule scoped with a path that had silently never fired, a `:has-text` that matched every ancestor, a redundant pair, and a set of fragile generated-class selectors. Show this. "Your list had 3 dead rules and 11 fragile ones" is the moment the tool proves it did something a copy-paste couldn't.
 
@@ -133,7 +133,7 @@ Vanity metrics are declined on principle, which is funny given the product.
 
 ## 10\. Open questions
 
-1. Generator or runtime for v1.1? Decide by testing the unpacked-install cliff with five real users before building either.  
+1. ~~Generator or runtime for v1.1? Decide by testing the unpacked-install cliff with five real users before building either.~~ Resolved: both, without the planned user test — see §6.  
 2. Ship presets (an "X, quieted" starter list) or stay import-only? Presets serve the secondary user but pull toward being a filter-list vendor, which is a different product with a different maintenance burden.  
 3. Does the import report justify the landing page on its own — i.e. is "audit my uBO list" a reason to visit even for people staying on Firefox?
 

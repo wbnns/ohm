@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ohm — privacy policy</title>
+<meta name="description" content="ohm's privacy policy: what data the site and the Chrome extension collect (none), what the extension's permissions are for, and where your filter rules live." />
+<meta name="theme-color" content="#041a1a" />
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="../assets/favicon.ico" sizes="16x16 32x32 48x48" />
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+<link rel="manifest" href="../site.webmanifest" />
+<meta property="og:title" content="ohm — privacy policy" />
+<meta property="og:description" content="What data the site and the Chrome extension collect (none), what the extension's permissions are for, and where your filter rules live." />
+<meta property="og:image" content="https://ohm.wbnns.com/assets/og.png" />
+<meta property="og:url" content="https://ohm.wbnns.com/privacy/" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root { --bg: #041a1a; --panel: #072121; --fg: #eafaf6; --fg-rgb: 234,250,246;
+          --accent: oklch(0.74 0.17 25); --accent-hi: oklch(0.82 0.15 25); --accent-rgb: 240,124,98; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(var(--accent-rgb), 0.35); }
+  a:hover { color: var(--accent-hi); border-bottom-color: var(--accent-hi); }
+  ::selection { background: var(--accent); color: var(--bg); }
+  main { color: var(--fg); font-size: 15px; line-height: 1.7; }
+  h1 { font-size: clamp(27px, 4.2vw, 36px); font-weight: 700; line-height: 1.22; letter-spacing: -0.035em; margin: 0 0 8px; }
+  h2 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; margin: 40px 0 12px; }
+  p { margin: 0 0 14px; color: rgba(var(--fg-rgb), 0.82); max-width: 68ch; }
+  ul { margin: 0 0 14px; padding-left: 22px; color: rgba(var(--fg-rgb), 0.82); }
+  li { margin: 0 0 6px; max-width: 66ch; }
+  code { font-family: inherit; background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 3px; padding: 1px 6px; font-size: 13px; color: var(--fg); }
+  .updated { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.5); margin: 0 0 40px; }
+  .back-link { font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6); border-bottom: 1px solid rgba(var(--fg-rgb), 0.25); }
+  .back-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
+  footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap; }
+</style>
+<!-- 100% privacy-first analytics -->
+<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+</head>
+<body>
+
+<div style="background: var(--bg); display: flex; justify-content: center; padding: 56px 28px 80px;">
+  <main style="width: 100%; max-width: 700px;">
+
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px;">
+      <a href="../" style="display: flex; align-items: center; gap: 11px; border-bottom: 0;">
+        <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
+          <path d="M 39.42 89.90 A 40 40 0 1 1 64.58 89.90"></path>
+          <path d="M 39.42 89.90 L 4.80 89.90 M 64.58 89.90 L 99.20 89.90"></path>
+        </svg>
+        <span style="font-weight: 700; font-size: 18px; letter-spacing: -0.02em; color: var(--fg);">ohm</span>
+      </a>
+      <a href="../" class="back-link">← home</a>
+    </div>
+
+    <h1>Privacy policy</h1>
+    <p class="updated">Last updated August 2026.</p>
+
+    <p>Short version: neither the website nor the Chrome extension collects, stores, or transmits your filter rules or your browsing activity anywhere. Everything ohm does happens on your own device.</p>
+
+    <h2>The website (ohm.wbnns.com)</h2>
+    <p>The generator page parses whatever you paste entirely in your browser tab — the text never leaves it, there's no server it's sent to, and no account or sign-in exists. This page and <a href="../docs/">the docs</a> use <a href="https://simpleanalytics.com/" target="_blank" rel="noopener">Simple Analytics</a> for basic page-view counts — it's cookieless, doesn't fingerprint you, and respects your browser's Do Not Track setting. It never sees anything you paste into the generator; it only knows a page was visited.</p>
+
+    <h2>The Chrome Web Store extension</h2>
+    <p>The installable extension (<a href="https://github.com/wbnns/ohm/tree/main/store-extension" target="_blank" rel="noopener">source</a>) requests two permissions:</p>
+    <ul>
+      <li><code>storage</code> — saves the filter rules you paste on its settings page to this browser's local extension storage (<code>chrome.storage.local</code>), so they persist between sessions. This stays on your device — it is not synced to a Google account, not synced across your other computers, and not accessible to any other extension or website.</li>
+      <li><code>host_permissions: &lt;all_urls&gt;</code> — the ability to run on any site. This is requested broadly because the extension is one shared package installed before you've written any rules, so it can't know in advance which sites your rules will eventually name. It does not act on that access indiscriminately: the content script that runs on each page checks your saved rules for that page's hostname, and does nothing at all unless you've written a rule for it. See <a href="../docs/#trust-but-verify">the docs</a> for exactly which files do what, so you can check this claim against the real code rather than take it on faith.</li>
+    </ul>
+    <p>The extension has no network permission (no <code>fetch</code> access, no <code>declarativeNetRequest</code>, nothing that could reach the internet) and contains no analytics or telemetry code. It has no way to send your rules or your browsing activity anywhere, because there is no code path in it capable of a network request.</p>
+
+    <h2>The generator's downloaded extension</h2>
+    <p>If you use the <a href="../">"build your own"</a> path instead of the Store listing, the same guarantees apply, with an even smaller permission footprint: the generated <code>manifest.json</code> has empty <code>permissions</code> and <code>host_permissions</code> arrays beyond the exact hosts your own rules name, and your rules are baked into the file itself rather than saved anywhere.</p>
+
+    <h2>Questions</h2>
+    <p>Open an issue on <a href="https://github.com/wbnns/ohm/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+
+    <footer>
+      <span>doesn't send your data anywhere</span><span>·</span><a href="../">home</a><span>·</span><a href="../docs/">docs</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
+    </footer>
+
+  </main>
+</div>
+
+</body>
+</html>

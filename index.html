@@ -32,15 +32,29 @@
   textarea:focus { outline: none; }
   #sample-btn:hover { color: var(--fg); }
   #download-btn:not(:disabled):hover { background: var(--accent-hi); }
+  .chooser { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 52px; }
+  .path { flex: 1 1 260px; min-width: 0; background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 6px; padding: 22px 22px 24px; display: flex; flex-direction: column; }
+  .path h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; }
+  .path p { font-size: 13px; line-height: 1.65; color: rgba(var(--fg-rgb), 0.72); margin: 0 0 18px; flex: 1; }
+  .path-btn { display: inline-block; text-align: center; font-family: inherit; font-weight: 700; font-size: 13.5px; padding: 12px 20px; border-radius: 999px; border: 0; cursor: pointer; text-decoration: none; border-bottom: 0; }
+  .path-btn.primary { background: var(--accent); color: var(--bg); }
+  .path-btn.primary:hover { background: var(--accent-hi); }
+  .path-btn.secondary { background: transparent; color: var(--fg); border: 1px solid rgba(var(--fg-rgb), 0.3); }
+  .path-btn.secondary:hover { border-color: var(--fg); }
+  .path-btn[aria-disabled="true"] { opacity: 0.45; cursor: default; pointer-events: none; }
+  .path-note { display: block; margin-top: 10px; font-size: 11.5px; color: rgba(var(--fg-rgb), 0.5); }
+  #build h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; }
+  #build > p.lede { font-size: 13.5px; color: rgba(var(--fg-rgb), 0.65); margin: 0 0 20px; }
 </style>
 <!-- 100% privacy-first analytics -->
 <script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
 <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+<script src="assets/ohm-parse.js"></script>
 </head>
 <body>
 
 <div style="background: var(--bg); color: var(--fg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 56px 28px; font-size: 15px; line-height: 1.7;">
-  <main style="width: 100%; max-width: 660px;">
+  <main style="width: 100%; max-width: 720px; min-width: 0;">
 
     <div style="display: flex; align-items: center; gap: 11px; margin-bottom: 44px;">
       <svg viewBox="0 0 104 104" width="22" height="22" fill="none" style="stroke: var(--accent);" stroke-width="10" stroke-linecap="round" aria-hidden="true">
@@ -53,27 +67,48 @@
     <h1 style="font-size: clamp(27px, 4.2vw, 40px); font-weight: 700; line-height: 1.24; letter-spacing: -0.035em; margin: 0 0 20px; text-wrap: pretty;">
       Adds uBlock Origin custom filters back to <span style="color: var(--accent);">Chrome</span>
     </h1>
-    <p style="font-size: 16px; color: rgba(var(--fg-rgb), 0.72); margin: 0 0 44px; max-width: 52ch; text-wrap: pretty;">
-      Paste your filter list. Get an extension that runs it. Nothing leaves this tab.
+    <p style="font-size: 16px; color: rgba(var(--fg-rgb), 0.72); margin: 0 0 40px; max-width: 58ch; text-wrap: pretty;">
+      Two ways to run it: install now, or build a personal copy scoped to exactly your own rules.
     </p>
 
-    <textarea id="rules-input" spellcheck="false" placeholder="x.com##div[data-testid=&quot;metadata&quot;]&#10;reddit.com##shreddit-comments-page-ad&#10;news.ycombinator.com##.pagetop:has-text(logout)" style="width: 100%; min-height: 190px; resize: vertical; background: var(--panel); color: var(--fg); border: 1px solid rgba(var(--fg-rgb), 0.16); border-radius: 3px; padding: 16px; font-family: inherit; font-size: 13.5px; line-height: 1.8; display: block;"></textarea>
-
-    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 14px;">
-      <button type="button" id="sample-btn" style="background: none; border: 0; color: rgba(var(--fg-rgb), 0.6); font-family: inherit; font-size: 12.5px; cursor: pointer; padding: 2px 0; border-bottom: 1px solid rgba(var(--fg-rgb), 0.25);">load a sample</button>
-      <span id="summary" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6);">waiting for input</span>
+    <div class="chooser">
+      <div class="path">
+        <h2>Install from the Chrome Web Store</h2>
+        <p>One click. Requests access to every site up front, since this shared extension can't know which ones your rules will target until you write them — it only ever acts on a page that has a saved rule matching it.</p>
+        <a class="path-btn primary" href="#" aria-disabled="true">Add to Chrome</a>
+        <span class="path-note">Coming soon — pending Chrome Web Store review</span>
+      </div>
+      <div class="path">
+        <h2>Build your own</h2>
+        <p>Paste your list below, download a personal extension scoped to only those hosts. Zero permissions beyond that — nothing to trust but the file in front of you.</p>
+        <a class="path-btn secondary" href="#build">Start building ↓</a>
+        <span class="path-note">Manual install, always current with your own edits</span>
+      </div>
     </div>
 
-    <div style="margin-top: 32px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
-      <button type="button" id="download-btn" disabled style="background: var(--accent); color: var(--bg); font-family: inherit; font-weight: 700; font-size: 14px; padding: 15px 26px; border: 0; border-radius: 999px; cursor: pointer; opacity: 0.45;">↓ Download extension</button>
-      <span id="hint" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55);">paste at least one host##selector rule</span>
+    <div id="build">
+      <h2>Build your own extension</h2>
+      <p class="lede">Paste your filter list. Get an extension that runs it. Nothing leaves this tab.</p>
+
+      <textarea id="rules-input" spellcheck="false" placeholder="x.com##div[data-testid=&quot;metadata&quot;]&#10;reddit.com##shreddit-comments-page-ad&#10;news.ycombinator.com##.pagetop:has-text(logout)" style="width: 100%; min-height: 190px; resize: vertical; background: var(--panel); color: var(--fg); border: 1px solid rgba(var(--fg-rgb), 0.16); border-radius: 3px; padding: 16px; font-family: inherit; font-size: 13.5px; line-height: 1.8; display: block;"></textarea>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 14px;">
+        <button type="button" id="sample-btn" style="background: none; border: 0; color: rgba(var(--fg-rgb), 0.6); font-family: inherit; font-size: 12.5px; cursor: pointer; padding: 2px 0; border-bottom: 1px solid rgba(var(--fg-rgb), 0.25);">load a sample</button>
+        <span id="summary" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.6);">waiting for input</span>
+      </div>
+
+      <div style="margin-top: 32px; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+        <button type="button" id="download-btn" disabled style="background: var(--accent); color: var(--bg); font-family: inherit; font-weight: 700; font-size: 14px; padding: 15px 26px; border: 0; border-radius: 999px; cursor: pointer; opacity: 0.45;">↓ Download extension</button>
+        <span id="hint" style="font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55);">paste at least one host##selector rule</span>
+      </div>
+
+      <p style="margin: 52px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 13.5px; line-height: 1.85; color: rgba(var(--fg-rgb), 0.62);">
+        To install: unzip it, open <code style="color: var(--fg);">chrome://extensions</code>, switch on Developer mode, click Load unpacked, pick the folder.
+      </p>
     </div>
 
-    <p style="margin: 52px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 13.5px; line-height: 1.85; color: rgba(var(--fg-rgb), 0.62);">
-      To install: unzip it, open <code style="color: var(--fg);">chrome://extensions</code>, switch on Developer mode, click Load unpacked, pick the folder.
-    </p>
     <p style="margin: 18px 0 0; font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; gap: 18px; flex-wrap: wrap;">
-      <span>doesn't send your data anywhere</span><span>·</span><span>only runs on the sites you list</span><span>·</span><a href="docs/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">docs</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a>
+      <span>doesn't send your data anywhere</span><span>·</span><span>only acts on sites your rules mention</span><span>·</span><a href="docs/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">docs</a><span>·</span><a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a>
     </p>
 
   </main>
@@ -93,50 +128,8 @@ const SAMPLE = [
   "||doubleclick.net^$third-party"
 ].join("\n");
 
-const PROC = /:(-abp-)?(has-text|matches-css(-before|-after)?|upward|nth-ancestor|xpath|watch-attr|min-text-length|others|matches-path|matches-media|remove|remove-class|remove-attr|style)\(/;
-const PROC_OK = ["has-text", "upward", "nth-ancestor", "remove-class", "remove-attr", "remove", "style"];
-
-function parse(text) {
-  const rules = [], skipped = [], seen = new Set();
-  text.split(/\r?\n/).forEach((raw, i) => {
-    const line = raw.trim();
-    if (!line || line[0] === "!" || line.startsWith("[Adblock") || line.startsWith("# ")) return;
-    const skip = (why) => skipped.push({ line: i + 1, raw: line, why });
-    if (/#@#/.test(line)) return skip("exception rule");
-    let hit = null;
-    for (const s of ["#?#", "##"]) { const k = line.indexOf(s); if (k > -1) { hit = [k, s]; break; } }
-    if (!hit) return skip("network filter — ohm does not block requests");
-    const [k, sep] = hit;
-    const left = line.slice(0, k);
-    const sel = line.slice(k + sep.length).trim();
-    if (!sel) return skip("empty selector");
-    if (sel.startsWith("+js(")) return skip("scriptlet");
-    if (sel.startsWith("^")) return skip("HTML filter");
-    if (!left) return skip("no host — ohm needs a host to stay scoped");
-    const hosts = [];
-    for (const d0 of left.split(",")) {
-      const d = d0.trim();
-      if (!d || d[0] === "~") continue;
-      if (d.endsWith(".*") || d.startsWith("*.") || d === "*") continue;
-      hosts.push(d.includes("/") ? d.split("/")[0] : d);
-    }
-    if (!hosts.length) return skip("wildcard domain can't be scoped");
-    let procedural = null;
-    if (PROC.test(sel)) {
-      const ops = [...sel.matchAll(/:(-abp-)?([a-z-]+)\(/g)].map(x => x[2]).filter(o => PROC.test(":" + o + "("));
-      const bad = ops.find(o => !PROC_OK.includes(o));
-      if (bad) return skip(":" + bad + "() has no MV3 equivalent");
-      procedural = ops;
-    }
-    for (const host of hosts) {
-      const key = host + "|" + sel;
-      if (seen.has(key)) continue;
-      seen.add(key);
-      rules.push({ host, selector: sel, procedural });
-    }
-  });
-  return { rules, skipped, hosts: [...new Set(rules.map(r => r.host))].sort() };
-}
+// parse(), PROC, PROC_OK now live in assets/ohm-parse.js, loaded above —
+// shared verbatim with store-extension/ so both surfaces run identical logic.
 
 function buildFiles(p) {
   const byHost = {};

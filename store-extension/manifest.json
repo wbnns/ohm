@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "ohm — custom cosmetic filters",
+  "version": "1.0.0",
+  "description": "Runs your own uBlock Origin cosmetic filter rules. Paste a list, it hides what you tell it to. No ad blocking, no network access.",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {},
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  }
+}
