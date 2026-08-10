@@ -9,7 +9,7 @@ let parsed = null;
 function renderSummary() {
   const p = parsed;
   summaryEl.textContent = p
-    ? p.rules.length + " rule" + (p.rules.length === 1 ? "" : "s") + " · " + p.hosts.length + " host" + (p.hosts.length === 1 ? "" : "s") + (p.skipped.length ? " · " + p.skipped.length + " skipped" : "")
+    ? p.rules.length + " rule" + (p.rules.length === 1 ? "" : "s") + " · " + p.hosts.length + " site" + (p.hosts.length === 1 ? "" : "s") + (p.skipped.length ? " · " + p.skipped.length + " skipped" : "")
     : "waiting for input";
 }
 

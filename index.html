@@ -481,7 +481,7 @@ function render() {
   const p = parsed;
   const ready = !!(p && p.rules.length);
   summaryEl.textContent = p
-    ? p.rules.length + " rule" + (p.rules.length === 1 ? "" : "s") + " · " + p.hosts.length + " host" + (p.hosts.length === 1 ? "" : "s") + (p.skipped.length ? " · " + p.skipped.length + " skipped" : "")
+    ? p.rules.length + " rule" + (p.rules.length === 1 ? "" : "s") + " · " + p.hosts.length + " site" + (p.hosts.length === 1 ? "" : "s") + (p.skipped.length ? " · " + p.skipped.length + " skipped" : "")
     : "waiting for input";
   hintEl.textContent = ready ? p.hosts.join(", ") : "paste at least one host##selector rule";
   downloadBtn.disabled = !ready;
