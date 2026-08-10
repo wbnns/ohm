@@ -32,6 +32,8 @@
   textarea:focus { outline: none; }
   #sample-btn:hover { color: var(--fg); }
   #download-btn:not(:disabled):hover { background: var(--accent-hi); }
+  .footer-link { color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25); }
+  .footer-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
   .chooser { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 52px; }
   .path { flex: 1 1 260px; min-width: 0; background: var(--panel); border: 1px solid rgba(var(--fg-rgb), 0.14); border-radius: 6px; padding: 22px 22px 24px; display: flex; flex-direction: column; }
   .path h2 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 10px; }
@@ -79,7 +81,7 @@
         <h2>Install from the Chrome Web Store</h2>
         <p>One click. Requests access to every site up front, since this shared extension can't know which ones your rules will target until you write them — it only ever acts on a page that has a saved rule matching it.</p>
         <a class="path-btn primary" href="#" aria-disabled="true">Add to Chrome</a>
-        <span class="path-note">Coming soon — pending Chrome Web Store review</span>
+        <span class="path-note">Submitted — in Google's review queue, link goes live once approved</span>
       </div>
       <div class="path">
         <h2>Build your own</h2>
@@ -113,11 +115,11 @@
     <p style="margin: 18px 0 0; font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; flex-direction: column; gap: 8px;">
       <span>doesn't send your data anywhere</span>
       <span>only acts on sites your rules mention</span>
-      <a href="docs/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">docs</a>
-      <a href="privacy/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">privacy</a>
-      <a href="support/" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">support</a>
-      <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">source</a>
-      <a href="https://github.com/wbnns/ohm/blob/main/LICENSE" target="_blank" rel="noopener" style="color: rgba(var(--fg-rgb), 0.7); border-bottom-color: rgba(var(--fg-rgb), 0.25);">MIT license</a>
+      <a href="docs/" class="footer-link">docs</a>
+      <a href="privacy/" class="footer-link">privacy</a>
+      <a href="support/" class="footer-link">support</a>
+      <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" class="footer-link">source</a>
+      <a href="https://github.com/wbnns/ohm/blob/main/LICENSE" target="_blank" rel="noopener" class="footer-link">MIT license</a>
     </p>
 
   </main>
