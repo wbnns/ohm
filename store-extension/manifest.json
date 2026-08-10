@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ohm",
   "version": "1.0.0",
-  "description": "Hide anything on a page with your own rules. No ads blocked, nothing sent anywhere. Compatible with uBlock Origin-style filters.",
+  "description": "Hide anything on a page with your own rules. Compatible with uBlock Origin-style filters.",
   "permissions": ["storage"],
   "host_permissions": ["<all_urls>"],
   "content_scripts": [

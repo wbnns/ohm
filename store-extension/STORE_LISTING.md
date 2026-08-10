@@ -12,9 +12,9 @@ ohm
 ## Short description (≤132 characters)
 
 ```
-Hide anything on a page with your own rules. No ads blocked, nothing sent anywhere. Compatible with uBlock Origin-style filters.
+Hide anything on a page with your own rules. Compatible with uBlock Origin-style filters.
 ```
-(128 chars.)
+(89 chars.)
 
 ## Long description
 
