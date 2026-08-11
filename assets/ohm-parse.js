@@ -25,12 +25,16 @@ function parse(text) {
     if (sel.startsWith("^")) return skip("HTML filter");
     if (!left) return skip("no host — ohm needs a host to stay scoped");
     const hosts = [];
+    let badHost = null;
     for (const d0 of left.split(",")) {
       const d = d0.trim();
-      if (!d || d[0] === "~") continue;
+      if (!d) continue;
+      if (d[0] === "~") { badHost = "exclusion hosts (~) not supported"; break; }
+      if (d.includes("://") || d.startsWith("//")) { badHost = "host can't include a URL scheme"; break; }
       if (d.endsWith(".*") || d.startsWith("*.") || d === "*") continue;
       hosts.push(d.includes("/") ? d.split("/")[0] : d);
     }
+    if (badHost) return skip(badHost);
     if (!hosts.length) return skip("wildcard domain can't be scoped");
     let procedural = null;
     if (PROC.test(sel)) {

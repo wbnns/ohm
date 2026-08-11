@@ -8,13 +8,14 @@
   const host = location.hostname.replace(/^www\./, "");
   const { ohm_rules_by_host } = await chrome.storage.local.get("ohm_rules_by_host");
   if (!ohm_rules_by_host) return;
-  const key = Object.keys(ohm_rules_by_host).find(h => host === h || host.endsWith("." + h));
-  if (!key) return;
-  const { css, proc } = ohm_rules_by_host[key];
+  const keys = Object.keys(ohm_rules_by_host).filter(h => host === h || host.endsWith("." + h));
+  if (!keys.length) return;
+  const css = keys.flatMap(k => ohm_rules_by_host[k].css);
+  const proc = keys.flatMap(k => ohm_rules_by_host[k].proc);
 
   if (css.length) {
     const style = document.createElement("style");
-    style.textContent = css.join(",\n") + " { display: none !important; }";
+    style.textContent = css.map(s => s + " { display: none !important; }").join("\n");
     (document.head || document.documentElement).appendChild(style);
   }
 

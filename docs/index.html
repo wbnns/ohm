@@ -87,7 +87,7 @@
   .demo-caption code { color: var(--accent-hi); background: none; border: 0; padding: 0; font-size: inherit; }
 </style>
 <!-- 100% privacy-first analytics -->
-<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/sri/v11.js" integrity="sha256-hkUzQr3zWmSDnmhw95ZmQSZ949upqD+ML9ejiN0UIIE= sha384-rfv15RJy1bBYZ1Mf4xizO26jorXb2myipCvHXy4rkG0SuEET96S+m0sTzu5vfbSI sha512-lQzjzTbOxHLwkZGDVMf4V0sm8v2Mrqm73IvKcXBftJ/MSZKQC4/jwKFToxT+3IVAVWQzLplSNHH8gM5d7b1BSg==" crossorigin="anonymous"></script>
 <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
 </head>
 <body>
@@ -203,7 +203,7 @@
     <p>There's no server anywhere in this pipeline. The generator is a static page; the extension it produces has no <code>host_permissions</code> beyond the sites you named and no code path that could reach the network even if it wanted to.</p>
 
     <h2 id="syntax"><span class="num">04</span>Filter syntax reference<a class="anchor" href="#syntax" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h2>
-    <p>Each rule is one line: <code>host##selector</code>. The host can be a comma-separated list (<code>x.com,pro.x.com##...</code>); each host gets its own copy of the rule. <code>host#?#selector</code> (uBO's "extended" cosmetic syntax) is accepted the same way.</p>
+    <p>Each rule is one line: <code>host##selector</code>. The host can be a comma-separated list (<code>x.com,pro.x.com##...</code>); each host gets its own copy of the rule. <code>host#?#selector</code> (uBO's "extended" cosmetic syntax) is accepted the same way. If you have rules for both a domain and one of its subdomains — <code>x.com</code> and <code>pro.x.com</code>, say — both groups apply together on the subdomain; the parent domain's rules don't get replaced by the more specific ones, they combine.</p>
 
     <h3 id="skipped-lines">What gets skipped, and why<a class="anchor" href="#skipped-lines" aria-label="Link to this section"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></a></h3>
     <div class="table-wrap"><table>
@@ -213,6 +213,8 @@
       <tr><td><code>x.com##+js(...)</code></td><td>Scriptlet injection — out of scope, only plain content-script behavior is supported</td></tr>
       <tr><td><code>x.com##^script:has-text(...)</code></td><td>HTML filter — not implementable as a content-script style/DOM tweak</td></tr>
       <tr><td><code>*##.ad</code> or <code>example.*##.ad</code></td><td>Wildcard host — ohm needs a concrete host to scope the extension's permissions to</td></tr>
+      <tr><td><code>example.com,~x.example.com##.ad</code></td><td>Exclusion hosts (<code>~</code>) aren't supported — the whole line is skipped rather than silently dropping just the exclusion</td></tr>
+      <tr><td><code>https://example.com##.ad</code></td><td>Host can't include a URL scheme — use the bare domain (<code>example.com</code>), not the full URL</td></tr>
     </table></div>
     <p>Every skipped line is listed with its line number and reason in the <code>README.md</code> bundled into your download, so nothing disappears silently at import time.</p>
 

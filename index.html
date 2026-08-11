@@ -72,7 +72,7 @@
   #build > p.lede { font-size: 13.5px; color: rgba(var(--fg-rgb), 0.65); margin: 0 0 20px; }
 </style>
 <!-- 100% privacy-first analytics -->
-<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/sri/v11.js" integrity="sha256-hkUzQr3zWmSDnmhw95ZmQSZ949upqD+ML9ejiN0UIIE= sha384-rfv15RJy1bBYZ1Mf4xizO26jorXb2myipCvHXy4rkG0SuEET96S+m0sTzu5vfbSI sha512-lQzjzTbOxHLwkZGDVMf4V0sm8v2Mrqm73IvKcXBftJ/MSZKQC4/jwKFToxT+3IVAVWQzLplSNHH8gM5d7b1BSg==" crossorigin="anonymous"></script>
 <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
 <script src="assets/ohm-parse.js"></script>
 </head>
@@ -419,13 +419,14 @@ function zip(files) {
 const OHM_CONTENT = `// ohm — content script. No network access, by construction.
 (() => {
   const host = location.hostname.replace(/^www\\./, "");
-  const key = Object.keys(OHM_RULES).find(h => host === h || host.endsWith("." + h));
-  if (!key) return;
-  const { css, proc } = OHM_RULES[key];
+  const keys = Object.keys(OHM_RULES).filter(h => host === h || host.endsWith("." + h));
+  if (!keys.length) return;
+  const css = keys.flatMap(k => OHM_RULES[k].css);
+  const proc = keys.flatMap(k => OHM_RULES[k].proc);
 
   if (css.length) {
     const style = document.createElement("style");
-    style.textContent = css.join(",\\n") + " { display: none !important; }";
+    style.textContent = css.map(s => s + " { display: none !important; }").join("\\n");
     (document.head || document.documentElement).appendChild(style);
   }
 
