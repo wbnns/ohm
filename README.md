@@ -22,7 +22,7 @@ No network access, no vendor, no account.
 
 | | Chrome Web Store | Build your own |
 | --- | --- | --- |
-| Install | One click | Paste a list at [ohm.wbnns.com](https://ohm.wbnns.com), download a zip, Load unpacked |
+| Install | [One click](https://chromewebstore.google.com/detail/ffnmgekpfhhaknmahgmfbjgomgdilggi) | Paste a list at [ohm.wbnns.com](https://ohm.wbnns.com), download a zip, Load unpacked |
 | Permissions | All sites, granted once — this shared install can't know your hosts in advance | Only the exact hosts your rules name, nothing else |
 | Updates | Edit anytime from the settings page | Re-paste your list, download again |
 
