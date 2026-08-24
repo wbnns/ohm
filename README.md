@@ -59,6 +59,7 @@ assets/ohm-parse.js     shared filter-list parser, used by both surfaces below
 store-extension/        the Chrome Web Store extension source
 docs/                   syntax reference, durability guidance, troubleshooting, FAQ
 privacy/                privacy policy
+terms/                  terms of use + analytics consent notice
 support/                contact + FAQ
 ```
 

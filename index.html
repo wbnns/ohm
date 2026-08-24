@@ -71,9 +71,26 @@
   #build h2 { font-size: 16px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; }
   #build > p.lede { font-size: 13.5px; color: rgba(var(--fg-rgb), 0.65); margin: 0 0 20px; }
 </style>
-<!-- 100% privacy-first analytics -->
-<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/sri/v11.js" integrity="sha256-hkUzQr3zWmSDnmhw95ZmQSZ949upqD+ML9ejiN0UIIE= sha384-rfv15RJy1bBYZ1Mf4xizO26jorXb2myipCvHXy4rkG0SuEET96S+m0sTzu5vfbSI sha512-lQzjzTbOxHLwkZGDVMf4V0sm8v2Mrqm73IvKcXBftJ/MSZKQC4/jwKFToxT+3IVAVWQzLplSNHH8gM5d7b1BSg==" crossorigin="anonymous"></script>
-<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+<!-- Google Analytics 4 (gtag.js) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted',
+    'functionality_storage': 'granted',
+    'personalization_storage': 'granted',
+    'security_storage': 'granted'
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-R2EEZDEKQX', {
+    'allow_google_signals': true,
+    'allow_ad_personalization_signals': true
+  });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2EEZDEKQX"></script>
 <script src="assets/ohm-parse.js"></script>
 </head>
 <body>
@@ -137,7 +154,7 @@
       <div class="path">
         <h2>Install from the Chrome Web Store</h2>
         <p>One click. Requests access to every site up front, since this shared extension can't know which ones your rules will target until you write them — it only ever acts on a page that has a saved rule matching it. Then write your own rules using the <a href="docs/#syntax">syntax reference</a>.</p>
-        <a class="path-btn primary" href="https://chromewebstore.google.com/detail/ffnmgekpfhhaknmahgmfbjgomgdilggi" target="_blank" rel="noopener">Add to Chrome</a>
+        <a class="path-btn primary" id="store-btn" href="https://chromewebstore.google.com/detail/ffnmgekpfhhaknmahgmfbjgomgdilggi" target="_blank" rel="noopener">Add to Chrome</a>
         <span class="path-note">Auto-updates itself, no manual steps</span>
       </div>
       <div class="path">
@@ -170,10 +187,11 @@
     </div>
 
     <p style="margin: 18px 0 0; font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; flex-direction: column; gap: 8px;">
-      <span>doesn't send your data anywhere</span>
+      <span>the extension doesn't send your data anywhere</span>
       <span>only acts on sites your rules mention</span>
       <a href="docs/" class="footer-link">docs</a>
       <a href="privacy/" class="footer-link">privacy</a>
+      <a href="terms/" class="footer-link">terms</a>
       <a href="support/" class="footer-link">support</a>
       <a href="https://github.com/sponsors/wbnns" target="_blank" rel="noopener" class="footer-link">sponsor</a>
       <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener" class="footer-link">source</a>
@@ -476,6 +494,11 @@ const OHM_CONTENT = `// ohm — content script. No network access, by constructi
 })();
 `;
 
+// Analytics events. Never carries rule text — counts only. No-op if the tag is blocked.
+function track(name, params) {
+  if (typeof gtag === "function") gtag("event", name, params || {});
+}
+
 const input = document.getElementById("rules-input");
 const summaryEl = document.getElementById("summary");
 const hintEl = document.getElementById("hint");
@@ -505,6 +528,11 @@ input.addEventListener("input", update);
 sampleBtn.addEventListener("click", () => {
   input.value = SAMPLE;
   update();
+  track("load_sample_list");
+});
+
+document.getElementById("store-btn").addEventListener("click", () => {
+  track("store_install_click");
 });
 
 downloadBtn.addEventListener("click", async () => {
@@ -517,6 +545,7 @@ downloadBtn.addEventListener("click", async () => {
     a.href = url; a.download = "ohm-extension.zip";
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
+    track("download_extension", { rule_count: parsed.rules.length, host_count: parsed.hosts.length, skipped_count: parsed.skipped.length });
   } finally {
     downloadBtn.disabled = false;
   }

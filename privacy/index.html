@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ohm — privacy policy</title>
-<meta name="description" content="ohm's privacy policy: what data the site and the Chrome extension collect (none), what the extension's permissions are for, and where your filter rules live." />
+<meta name="description" content="ohm's privacy policy: what the site's analytics collect, what data the Chrome extension collects (none), what its permissions are for, and where your filter rules live." />
 <meta name="theme-color" content="#041a1a" />
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
 <link rel="alternate icon" href="../assets/favicon.ico" sizes="16x16 32x32 48x48" />
 <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
 <link rel="manifest" href="../site.webmanifest" />
 <meta property="og:title" content="ohm — privacy policy" />
-<meta property="og:description" content="What data the site and the Chrome extension collect (none), what the extension's permissions are for, and where your filter rules live." />
+<meta property="og:description" content="What the site's analytics collect, what data the Chrome extension collects (none), what its permissions are for, and where your filter rules live." />
 <meta property="og:image" content="https://ohm.wbnns.com/assets/og.png" />
 <meta property="og:url" content="https://ohm.wbnns.com/privacy/" />
 <meta name="twitter:card" content="summary_large_image" />
@@ -45,9 +45,26 @@
   .sponsor-link:hover { color: var(--fg); border-bottom-color: var(--fg); }
   footer { margin: 64px 0 0; padding-top: 26px; border-top: 1px solid rgba(var(--fg-rgb), 0.14); font-size: 12.5px; color: rgba(var(--fg-rgb), 0.55); display: flex; flex-direction: column; gap: 8px; }
 </style>
-<!-- 100% privacy-first analytics -->
-<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/sri/v11.js" integrity="sha256-hkUzQr3zWmSDnmhw95ZmQSZ949upqD+ML9ejiN0UIIE= sha384-rfv15RJy1bBYZ1Mf4xizO26jorXb2myipCvHXy4rkG0SuEET96S+m0sTzu5vfbSI sha512-lQzjzTbOxHLwkZGDVMf4V0sm8v2Mrqm73IvKcXBftJ/MSZKQC4/jwKFToxT+3IVAVWQzLplSNHH8gM5d7b1BSg==" crossorigin="anonymous"></script>
-<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+<!-- Google Analytics 4 (gtag.js) -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'granted',
+    'ad_user_data': 'granted',
+    'ad_personalization': 'granted',
+    'analytics_storage': 'granted',
+    'functionality_storage': 'granted',
+    'personalization_storage': 'granted',
+    'security_storage': 'granted'
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-R2EEZDEKQX', {
+    'allow_google_signals': true,
+    'allow_ad_personalization_signals': true
+  });
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-R2EEZDEKQX"></script>
 </head>
 <body>
 
@@ -78,7 +95,14 @@
     <p>Short version: neither the website nor the Chrome extension collects, stores, or transmits your filter rules or your browsing activity anywhere. Everything ohm does happens on your own device.</p>
 
     <h2>The website (ohm.wbnns.com)</h2>
-    <p>The generator page parses whatever you paste entirely in your browser tab — the text never leaves it, there's no server it's sent to, and no account or sign-in exists. This page and <a href="../docs/">the docs</a> use <a href="https://simpleanalytics.com/" target="_blank" rel="noopener">Simple Analytics</a> for basic page-view counts — it's cookieless, doesn't fingerprint you, and respects your browser's Do Not Track setting. It never sees anything you paste into the generator; it only knows a page was visited.</p>
+    <p>The generator page parses whatever you paste entirely in your browser tab — the text never leaves it, there's no server it's sent to, and no account or sign-in exists. Every page on the site loads <a href="https://marketingplatform.google.com/about/analytics/" target="_blank" rel="noopener">Google Analytics</a> (GA4, property <code>G-R2EEZDEKQX</code>), with all of its measurement features switched on. It sets cookies in your browser and sends Google your IP address, approximate location (country, region, city), device, browser and screen details, referrer, the pages you view, and the actions you take on them — including scrolls, outbound link clicks, site searches, and generator events such as picking a build path or downloading an extension. Google Signals is enabled, so for signed-in Google users who have Ads Personalization on, Google can also join that activity to their Google account for cross-device reporting and ad personalization.</p>
+
+    <p>Analytics never sees the filter rules you paste into the generator. That text stays in your tab, and no event carries its contents.</p>
+
+    <p>Google's handling of what it receives is covered by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. If you don't want to be measured, a content blocker, a cookie-blocking browser setting, or <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google's opt-out add-on</a> stops the tag from loading or reporting.</p>
+
+    <h2>Cookies and consent</h2>
+    <p>The site shows no cookie banner. Instead, consent is given by use: by loading or continuing to use ohm.wbnns.com you consent to the analytics cookies and data collection described above and set out in the <a href="../terms/">terms of use</a>. If you do not consent, do not use the site — or block the tag with any of the methods above. Nothing on the site is gated behind analytics; blocking it costs you nothing.</p>
 
     <h2>The Chrome Web Store extension</h2>
     <p>The installable extension (<a href="https://github.com/wbnns/ohm/tree/main/store-extension" target="_blank" rel="noopener">source</a>) requests two permissions:</p>
@@ -95,11 +119,12 @@
     <p>See <a href="../support/">support</a>, email <a href="mailto:ohm@wbnns.com">ohm@wbnns.com</a>, or open an issue on <a href="https://github.com/wbnns/ohm/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 
     <footer>
-      <span>doesn't send your data anywhere</span>
+      <span>the extension doesn't send your data anywhere</span>
       <span>only acts on sites your rules mention</span>
       <a href="../">home</a>
       <a href="../docs/">docs</a>
       <a href="../support/">support</a>
+      <a href="../terms/">terms</a>
       <a href="https://github.com/sponsors/wbnns" target="_blank" rel="noopener">sponsor</a>
       <a href="https://github.com/wbnns/ohm" target="_blank" rel="noopener">source</a>
       <a href="https://github.com/wbnns/ohm/blob/main/LICENSE" target="_blank" rel="noopener">MIT license</a>
